@@ -1,0 +1,50 @@
+@Metadata.layer: #CORE
+@UI: { headerInfo: {
+typeName: 'Attachment',
+typeNamePlural: 'Attachments',
+title: { type: #STANDARD, value: 'attach_Id' },
+         imageUrl: 'Attachment',
+         description: { type: #STANDARD, value: 'Filename' } },
+         presentationVariant: [{
+         sortOrder: [{ by: 'attach_Id', direction: #ASC }],
+         visualizations: [{type: #AS_LINEITEM}] }] }
+annotate view Y27D_C_ATTACH_DUP_RAP
+    with 
+{
+@UI.facet: [
+
+  { type: #IDENTIFICATION_REFERENCE, position: 1, id: 'soAttach',label:'Attachments' }
+  ]
+  @UI.hidden: true
+  @UI:{ lineItem: [{  position: 10, label: 'Sales Doc', importance: #HIGH }],
+  identification: [{ position: 10, label: 'Sales Doc' }] }
+  sales_doc;
+  
+  @UI.hidden: true
+  @UI:{ lineItem: [{  position: 20, label: 'Postion', importance: #HIGH }],
+  identification: [{ position: 20, label: 'Postion' }] }
+  item_positon;
+
+  @UI:{ lineItem: [{  position: 30, label: 'Attach ID', importance: #HIGH }],
+  identification: [{ position: 30, label: 'Attach ID' }] }
+  attach_Id;
+
+  @UI:{ lineItem: [{  position: 40, label: 'Document', importance: #HIGH }],
+  identification: [{ position: 40, label: 'Document' }] }
+  Attachment;
+
+  @UI:{ lineItem: [{  position: 50, label: 'Comments', importance: #HIGH }],
+  identification: [{ position: 50, label: 'Comments' }]  }
+  Comments;
+
+//  @UI:{ lineItem: [{  position: 60, label: 'Filename', importance: #HIGH } ],
+//  identification: [{ position:60, label: 'Filename' }] }
+//  Filename;
+  
+  @UI.hidden: true
+  MimeType;
+
+//  @UI.hidden: true
+//  Filename;
+    
+}

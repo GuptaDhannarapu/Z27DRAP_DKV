@@ -1,0 +1,6 @@
+@EndUserText.label: 'Service Definition'
+define service Z27D_SD_SALES_RAP {
+  expose Z27D_C_RAP_HEAD       as SalesHead;
+  expose Z27D_C_RAP_ITEM       as SalesItem;
+  expose Y27D_C_ATTACH_DUP_RAP as SalesAttach;
+}

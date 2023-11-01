@@ -1,0 +1,57 @@
+@Metadata.layer: #CORE
+annotate view Z27D_C_RAP_ITEM
+    with 
+{
+@UI.facet: [
+
+  { type: #IDENTIFICATION_REFERENCE, position: 1, id: 'soItem',label:'Items' },
+
+   {
+            id:'soAttach',
+            purpose: #STANDARD,
+            type: #LINEITEM_REFERENCE,
+            label: 'Attachments',
+            position: 2,
+            targetElement: '_soAttach' }
+  ]
+
+  @UI:{ lineItem: [{  position: 10, label: 'Number', importance: #LOW } ],
+  identification: [{ position: 10, label: 'SO Number' },
+                   { importance: #HIGH, label: 'Attachement',
+                     dataAction: 'attachement', type: #FOR_ACTION, position: 1
+                      } 
+                      ] }
+  sales_doc;
+
+  @UI:{ lineItem: [{  position: 20, label: 'Postion', importance: #HIGH }],
+  identification: [{ position: 20, label: 'Postion' }],
+  fieldGroup: [{ qualifier: 'ItemDetail' ,position: 20, importance: #HIGH}] }
+  item_position;
+
+  @UI:{ lineItem: [{  position: 30, label: 'Material', importance: #HIGH }],
+  identification: [{ position: 30, label: 'Material' }],
+  fieldGroup: [{ qualifier: 'ItemDetail' ,position: 30, importance: #HIGH}] }
+  mat_num;
+
+  @UI:{ lineItem: [{  position: 40, label: 'Desc', importance: #HIGH }],
+  identification: [{ position: 40, label: 'Desc' }],
+  fieldGroup: [{ qualifier: 'ItemDetail' ,position: 40, importance: #HIGH}] }
+  mat_desc;
+
+  @UI:{ lineItem: [{  position: 50, label: 'Unit Price', importance: #HIGH }],
+  identification: [{ position: 50, label: 'Unit Price' }],
+  fieldGroup: [{ qualifier: 'ItemDetail' ,position: 50, importance: #HIGH}]  }
+//  @Consumption.valueHelpDefinition: [{ entity:{ name: 'Z27D_C_SALES_HEAD', element: 'c' } }]
+  unit_cost;
+
+
+  @UI:{ lineItem: [{  position: 60, label: 'Quantity', importance: #HIGH } ],
+  identification: [{ position: 60, label: 'Quantity' }],
+  fieldGroup: [{ qualifier: 'ItemDetail' , position: 60,importance: #HIGH}]  }
+  quanity;
+
+  @UI:{ lineItem: [{  position: 70, label: 'Total Price', importance: #HIGH }],
+  identification: [{ position: 70, label: 'Total Price' }],
+  fieldGroup: [{ qualifier: 'ItemDetail' ,position: 70, importance: #HIGH}]  }
+  total_item_cost;
+}

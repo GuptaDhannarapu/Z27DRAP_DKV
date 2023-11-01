@@ -1,0 +1,103 @@
+managed implementation in class zbp_27d_i_rap_head unique;
+strict ( 2 );
+with draft;
+
+define behavior for Z27D_I_RAP_HEAD alias soHead
+with unmanaged save
+//persistent table y27d_db_vbak
+draft table y27d_draft_head
+//early numbering
+lock master
+total etag LastChangedTimestamp
+authorization master ( instance )
+//etag master LastChangedTimestamp
+{
+  create;
+  update ( features : instance );
+  delete ( features : instance );
+  draft action Edit ;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare ;
+  association _soItem { create ( features : instance ); }
+  field ( readonly ) sales_doc, block_status_msg, created_at, created_by, total_cost;
+  action ( features : instance ) blockOrder result [1] $self;
+  action ( features : instance ) unblockOrder result [1] $self;
+  mapping for y27d_db_vbak control Z27D_C_RAP_HEAD corresponding
+    {
+      sales_doc  = vbeln;
+      sales_dist     = vtweg;
+      sales_div      = spart;
+      sales_org      = vkorg;
+      total_cost     = netwr;
+      cost_currency  = waerk;
+      created_by = ernam;
+      created_at   = erdat;
+      LastChangedTimestamp   = last_changed_timestamp;
+    }
+}
+
+define behavior for Z27D_I_RAP_ITEM alias soItem
+//persistent table y27d_db_vbap
+//late numbering
+draft table y27d_draft_item
+//early numbering
+with unmanaged save
+lock dependent by _sohead
+authorization dependent by _sohead
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) sales_doc, item_position;
+//  action (features : instance) attachement result [1] $self;
+  association _sohead;
+  association _soAttach { create; }
+  side effects
+  { field unit_cost affects field total_item_cost; field quanity affects field total_item_cost;
+    field total_item_cost affects field _soHead.total_cost; }
+  determination determineTotalPrice on modify { field unit_cost; field quanity; }
+  determination determineHTotalPrice on modify { field total_item_cost; }
+   mapping for y27d_db_vbap control Z27D_C_RAP_ITEM corresponding
+    {
+      sales_doc   = vbeln;
+      item_position   = posnr;
+      cost_currency   = waerk;
+      mat_desc        = arktx;
+      mat_num         = matnr;
+      quanity         = kpein;
+      total_item_cost = netwr;
+      unit_cost       = netpr;
+      unit            = kmein;
+      last_changed    = last_changed_timestamp;
+    }
+}
+
+define behavior for Y27D_I_ATTACH_DUP_RAP alias soAttach
+with unmanaged save
+//persistent table y27d_db_attach
+draft table y27d_draft_att
+//early numbering
+lock dependent by _sohead
+authorization dependent by _sohead
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) sales_doc, item_positon,attach_Id;
+//  field ( readonly : update)  Document;
+  association _sohead;
+  association _soItem;
+   mapping for y27d_db_attach control Y27D_I_ATTACH_DUP_RAP
+    {
+      sales_doc   = vbeln;
+      item_positon   = posnr;
+//      Comments = comments;
+      Attachment   = document;
+//      Filename = filename;
+      attach_Id = attch_id;
+//      Mimetype = mimetype;
+
+    }
+}

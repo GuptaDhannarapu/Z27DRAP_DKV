@@ -1,0 +1,131 @@
+@Metadata.layer: #CORE
+
+@UI.lineItem: [{criticality: 'block'}]
+// Header Info
+@UI:{
+        headerInfo:{
+
+        typeName: 'Sale Document',
+        typeNamePlural: 'Sale Documents',
+        title: { value: 'sales_doc' },
+        description: { value: 'created_by' }
+     }
+
+
+     }
+annotate view Z27D_C_RAP_HEAD
+    with 
+{
+@UI.facet: [
+            { id:'idHFSales',
+              purpose: #HEADER,
+              type: #DATAPOINT_REFERENCE,
+              targetQualifier: 'sales_org' },
+              { id:'idHFDist',
+              purpose: #HEADER,
+              type: #DATAPOINT_REFERENCE,
+              targetQualifier: 'sales_dist' },
+              { id:'idHFDiv',
+              purpose: #HEADER,
+              type: #DATAPOINT_REFERENCE,
+              targetQualifier: 'sales_div' },
+              { id:'idHFRat',
+              purpose: #HEADER,
+              type: #DATAPOINT_REFERENCE,
+              targetQualifier: 'block' },
+//              { id:'idHFStatu',
+//              purpose: #HEADER,
+//              type: #DATAPOINT_REFERENCE,
+//              targetQualifier: 'block_status_msg' },
+//
+            { id:'General', type:#COLLECTION, position: 1, label: 'Sales Document Details' },
+
+            { id:'idBasic',label: 'Sales Info',parentId: 'General', type:#FIELDGROUP_REFERENCE,
+              targetQualifier: 'BasicInfo' },
+              
+            { id:'idDetail',label: 'Items Info',parentId: 'General', type:#FIELDGROUP_REFERENCE, position: 20, 
+              targetQualifier: 'DetailInfo' },
+            
+            { id:'idCreated',label: 'Creation Info',parentId: 'General', type:#FIELDGROUP_REFERENCE, position: 30, 
+              targetQualifier: 'CreationInfo' },  
+//            
+            {
+            id:'soHead',
+            purpose: #STANDARD,
+            type: #LINEITEM_REFERENCE,
+            label: 'Sales Order Items',
+            position: 2,
+            targetElement: '_soItem' }
+//            
+//            {
+//            id:'soHead2',
+//            purpose: #STANDARD,
+//            type: #CHART_REFERENCE,
+//            label: 'Analytical Information',
+//            position: 3,
+//            targetElement: '_soItem',
+//            targetQualifier: 'ItVsCst' }
+
+            ]
+   @UI:{ lineItem: [{  position: 10, label: 'sales Doc Number', importance: #HIGH}],
+//    identification: [{ position: 10,  }],
+  fieldGroup: [{ position: 10, qualifier: 'BasicInfo',label: 'Sales Doc Number', importance: #HIGH}] }
+  @UI.selectionField: [{element: 'sales_doc' }]
+  @Search.defaultSearchElement: true
+//  @Consumption.filter.mandatory: true
+  @Search.fuzzinessThreshold: 0.8
+//     @Consumption.valueHelpDefinition: [{ entity:{ name: 'y27d_db_vbak', element: 'vbeln' } }]
+  sales_doc;
+
+  @UI:{ lineItem: [{  position: 20, label: 'Sales Org', importance: #MEDIUM }],
+//    identification: [{ position: 40,  }],
+   fieldGroup: [{ position: 10, qualifier: 'BasicInfo',label: 'Sale Org',importance: #HIGH}] }
+  @UI.dataPoint:{ title: 'Sales Org' }
+  sales_org;
+
+  @UI:{ lineItem: [{  position: 30, label: 'Sales Dist', importance: #MEDIUM }],
+//    identification: [{ position: 50,  }],
+   fieldGroup: [{ position: 20, qualifier: 'BasicInfo' ,label: 'Sales Dist', importance: #HIGH}] }
+  @UI.dataPoint:{ title: 'Dist Channel' }
+  sales_dist;
+
+  @UI:{ lineItem: [{  position: 40, label: 'Sales Div', importance: #MEDIUM }],
+//    identification: [{ position: 60,  }],
+   fieldGroup: [{ position: 30, qualifier: 'BasicInfo' ,label: 'Sales Div', importance: #HIGH}] }
+  @UI.dataPoint:{ title: 'Division' }
+  sales_div;
+
+  @UI:{ lineItem: [{  position: 70, label: 'Data Created', importance: #HIGH }],
+//   identification: [{ position: 15, label: 'Date Created' }],
+   fieldGroup: [{ qualifier: 'CreationInfo' ,position: 10,label: 'Date Created', importance: #HIGH}]  }
+  created_at;
+
+  @UI:{ lineItem: [{  position: 80, label: 'Create By', importance: #HIGH }],
+//  identification: [{ position: 20,  }],
+   fieldGroup: [{ qualifier: 'CreationInfo' ,position: 10,label: 'Person Created', importance: #HIGH}] }
+  created_by;
+
+  @UI:{ lineItem: [{  position: 90, label: 'Total', importance: #HIGH }],
+//  identification: [{ position: 30,  }],
+   fieldGroup: [{ qualifier: 'DetailInfo' ,label: 'Cost', importance: #HIGH}] }
+//   @Consumption.valueHelpDefinition: [{entity.name: 'Z27D_I_RAP_HEAD'}]
+  total_cost;
+ 
+ @UI:{ lineItem: [{  position: 50, label: 'Block Status', importance: #HIGH },
+                  { type:#FOR_ACTION, dataAction: 'blockOrder',label: 'Block' },
+                  { type:#FOR_ACTION, dataAction: 'unblockOrder',label: 'UnBlock' },
+                  { criticality: 'block' }
+  ],
+
+  identification: [{ position: 40, label: 'Block Status' } ],
+   fieldGroup: [{ qualifier: 'DetailInfo',label: 'Block Status',importance: #HIGH}]
+  }
+  @UI.dataPoint:{ title: 'Status', criticality: 'block' }
+  block_status_msg;
+
+  @UI:{ lineItem: [{position: 60, criticality: 'block',type:#AS_DATAPOINT,
+                    label: 'Status', importance: #HIGH }] }
+  @UI.dataPoint:{ title: 'Rating',visualization: #RATING  }
+  block;
+    
+}

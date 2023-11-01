@@ -1,0 +1,44 @@
+projection implementation in class zbp_27d_c_rap_head unique;
+strict ( 2 );
+use draft;
+
+define behavior for Z27D_C_RAP_HEAD alias soHead
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _soItem { create;  }
+  use action blockOrder;
+  use action unblockOrder;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+}
+
+define behavior for Z27D_C_RAP_ITEM alias soItem
+{
+  use update;
+  use delete;
+
+  use association _sohead;
+  use association _soAttach { create; }
+  side effects
+  { field unit_cost affects field total_item_cost; field quanity affects field total_item_cost;
+    field total_item_cost affects field _soHead.total_cost; }
+//  use action attachement;
+
+}
+
+define behavior for Y27D_C_ATTACH_DUP_RAP alias soAttach
+{
+  use update;
+  use delete;
+
+  use association _sohead;
+  use association _soItem;
+}
